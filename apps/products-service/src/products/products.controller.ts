@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductsController {
@@ -16,6 +16,15 @@ export class ProductsController {
     return {
       message: 'Product retrieved successfully',
       data: { id, name: 'Sample Product' },
+    };
+  }
+
+  @EventPattern('order.created')
+  updateStock(order: { id: string; productId: string }) {
+    console.log('Updating stock for order:', order);
+    return {
+      message: 'Stock updated successfully',
+      data: order,
     };
   }
 }
